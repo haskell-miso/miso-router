@@ -1,4 +1,4 @@
-# :ramen: miso-router
+# :ramen: 🌐 miso-router
 
 ## Build and run
 
