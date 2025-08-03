@@ -38,12 +38,12 @@ main = run $
        }
 
 -- | Update your model
-updateModel :: Action -> Effect Model Action
+updateModel :: Action -> Transition Model Action
 updateModel (HandleURI u) = modify $ \m -> m { uri = u }
 updateModel (ChangeURI u) = io_ (pushURI u)
 
 -- | View function, with routing
-viewModel :: Model -> View Action
+viewModel :: Model -> View Model Action
 viewModel m = view_
   where
     view_ =
@@ -71,8 +71,8 @@ viewModel m = view_
 
 -- | Type-level routes
 type API = About :<|> Home
-type Home = View Action
-type About = "about" :> View Action
+type Home = View Model Action
+type About = "about" :> View Model Action
 
 -- | Type-safe links used in `onClick` event handlers to route the application
 aboutUri, homeUri :: URI
