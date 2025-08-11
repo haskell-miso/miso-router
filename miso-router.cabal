@@ -10,6 +10,8 @@ common wasm
       -DWASM
 
 executable app
+  import:
+    wasm
   hs-source-dirs:
     src
   main-is:
