@@ -16,7 +16,7 @@ import Servant.Links
 import Miso
 import Miso.Lens
 -----------------------------------------------------------------------------
-#if defined(wasm32_HOST_ARCH)
+#ifdef WASM
 foreign export javascript "hs_start" main :: IO ()
 #endif
 -----------------------------------------------------------------------------
@@ -33,7 +33,7 @@ main :: IO ()
 main = run $
   miso $ \url ->
     (component url updateModel viewModel)
-       { subs = [uriSub SetURI]
+       { subs = [ uriSub SetURI ]
        }
 -----------------------------------------------------------------------------
 -- | Update your model
