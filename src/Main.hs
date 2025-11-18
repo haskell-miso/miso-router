@@ -1,6 +1,7 @@
 -----------------------------------------------------------------------------
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE TypeApplications #-}
@@ -38,8 +39,9 @@ main = run $
 -----------------------------------------------------------------------------
 -- | Update your model
 updateModel :: Action -> Transition Model Action
-updateModel (SetURI u)  = this .= u
-updateModel (PushURI u) = io_ (pushURI u)
+updateModel = \case
+  SetURI u -> this .= u
+  PushURI u -> io_ (pushURI u)
 -----------------------------------------------------------------------------
 -- | View function, with routing
 viewModel :: Model -> View Model Action
