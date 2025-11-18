@@ -16,6 +16,7 @@ import Servant.Links
 -----------------------------------------------------------------------------
 import Miso
 import Miso.Lens
+import qualified Miso.Style as Style
 -----------------------------------------------------------------------------
 #ifdef WASM
 foreign export javascript "hs_start" main :: IO ()
@@ -52,7 +53,7 @@ viewModel uri =
       div_ 
       [] 
       [ h1_
-        [ CSS.style ["font-family" =: "monospace"] ]
+        [ Style.style_ ["font-family" =: "monospace"] ]
         [ "🍜 🌐 miso-router" ]
       , v
       ]
