@@ -46,7 +46,14 @@ viewModel :: Model -> View Model Action
 viewModel uri =
   case route (Proxy :: Proxy API) (about :<|> home) id uri of
     Left _ -> the404
-    Right v -> v
+    Right v -> 
+      div_ 
+      [] 
+      [ h1_
+        [ CSS.style ["font-family" =: "monospace"] ]
+        [ "🍜 🌐 miso-router" ]
+      , v
+      ]
   where
     home (_ :: Model) =
         div_
