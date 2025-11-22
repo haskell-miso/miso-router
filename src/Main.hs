@@ -55,7 +55,9 @@ viewModel uri =
       [ h1_
         [ Style.style_ ["font-family" =: "monospace"] ]
         [ "🍜 🌐 miso-router" ]
-      , v
+      , h2_
+        [ Style.style_ ["font-family" =: "monospace"] ]
+        [ v ]
       ]
   where
     home (_ :: Model) =
