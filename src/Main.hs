@@ -54,7 +54,7 @@ viewModel uri =
       [] 
       [ h1_
         [ Style.style_ ["font-family" =: "monospace"] ]
-        [ "🍜 🌐 miso-router" ]
+        [ a_ [ href_ "https://github.com/haskell-miso/miso-router" ] [ "🍜 🌐 miso-router" ] ]
       , h2_
         [ Style.style_ ["font-family" =: "monospace"] ]
         [ v ]
@@ -63,7 +63,7 @@ viewModel uri =
     home (_ :: Model) =
         div_
         []
-        [ div_ [] [text "home"]
+        [ div_ [ ] [text "home"]
         , button_ [onClick goAbout] [text "go about"]
         ]
     about (_ :: Model) =
