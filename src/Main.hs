@@ -16,7 +16,7 @@ import Miso hiding (URI(..))
 import Miso.Html
 import Miso.Html.Property
 import Miso.Lens
-import Miso.Router
+import Miso.Router hiding (href_)
 import qualified Miso.CSS as Style
 import GHC.Generics
 -----------------------------------------------------------------------------
@@ -62,18 +62,22 @@ viewModel uri =
       [] 
       [ h1_
         [ Style.style_ ["font-family" =: "monospace"] ]
-        [ "🍜 🌐 miso-router" ]
-      , case v of
-          Home -> home
-          About -> about
-          The404 -> the404
-          Index -> home
+        [ "🍜 🌐 ", a_ [ href_ "https://github.com/haskell-miso/miso-router" ] [ "miso-router" ] ]
+      , h2_
+         [ Style.style_ ["font-family" =: "monospace"] 
+         ]
+         [ case v of
+            Home -> home
+            About -> about
+            The404 -> the404
+            Index -> home
+         ]
       ]
   where
     home =
         div_
         []
-        [ div_ [] [text "home"]
+        [ div_ [ ] [text "home"]
         , button_ [onClick goAbout] [text "go about"]
         ]
     about =
