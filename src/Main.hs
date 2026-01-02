@@ -4,19 +4,21 @@
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 -----------------------------------------------------------------------------
 module Main where
 -----------------------------------------------------------------------------
-import Data.Proxy
-import Servant.API
-import Servant.Links
------------------------------------------------------------------------------
-import Miso
+import Miso hiding (URI(..))
+import Miso.Html
+import Miso.Html.Property
 import Miso.Lens
-import qualified Miso.Style as Style
+import Miso.Router
+import qualified Miso.CSS as Style
+import GHC.Generics
 -----------------------------------------------------------------------------
 #ifdef WASM
 foreign export javascript "hs_start" main :: IO ()
@@ -27,8 +29,12 @@ type Model = URI
 -- | Action
 data Action
   = SetURI URI
-  | PushURI URI
+  | PushURI Route
   deriving (Show, Eq)
+-----------------------------------------------------------------------------
+data Route = Index | Home | About | The404
+  deriving anyclass Router
+  deriving stock (Show, Eq, Generic)
 -----------------------------------------------------------------------------
 -- | Main entry point
 main :: IO ()
@@ -41,13 +47,15 @@ main = run $
 -- | Update your model
 updateModel :: Action -> Transition Model Action
 updateModel = \case
-  SetURI u -> this .= u
-  PushURI u -> io_ (pushURI u)
+  SetURI u -> do
+    this .= u
+  PushURI route ->
+    io_ (pushURI (toURI route))
 -----------------------------------------------------------------------------
 -- | View function, with routing
 viewModel :: Model -> View Model Action
 viewModel uri =
-  case route (Proxy :: Proxy API) (about :<|> home) id uri of
+  case route uri of
     Left _ -> the404
     Right v -> 
       div_ 
@@ -55,16 +63,20 @@ viewModel uri =
       [ h1_
         [ Style.style_ ["font-family" =: "monospace"] ]
         [ "🍜 🌐 miso-router" ]
-      , v
+      , case v of
+          Home -> home
+          About -> about
+          The404 -> the404
+          Index -> home
       ]
   where
-    home (_ :: Model) =
+    home =
         div_
         []
         [ div_ [] [text "home"]
         , button_ [onClick goAbout] [text "go about"]
         ]
-    about (_ :: Model) =
+    about =
         div_
         []
         [ div_ [] [text "about"]
@@ -78,15 +90,8 @@ viewModel uri =
         ]
 -----------------------------------------------------------------------------
 -- | Type-level routes
-type API = About :<|> Home
-type Home = View Model Action
-type About = "about" :> View Model Action
------------------------------------------------------------------------------
--- | Type-safe links used in `onClick` event handlers to route the application
-aboutUri, homeUri :: URI
-aboutUri :<|> homeUri = allLinks' linkURI (Proxy @API)
 -----------------------------------------------------------------------------
 goHome, goAbout :: Action
-goHome = PushURI homeUri
-goAbout = PushURI aboutUri
+goHome = PushURI Home
+goAbout = PushURI About
 -----------------------------------------------------------------------------
