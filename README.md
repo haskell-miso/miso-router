@@ -1,4 +1,6 @@
-# :ramen: 🌎 miso-router
+# :ramen: 🌐 miso-router
+
+This code is using the [servant-miso-router](https://github.com/haskell-miso/servant-miso-router) and not the [Miso.Router](https://haddocks.haskell-miso.org/miso/Miso-Router.html) module.
 
 ## Build and run
 
@@ -9,4 +11,3 @@ nix develop .#wasm
 make
 make serve
 ```
-
