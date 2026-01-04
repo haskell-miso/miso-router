@@ -39,9 +39,10 @@ data Route = Index | Home | About | The404
 -- | Main entry point
 main :: IO ()
 main = run $
-  miso $ \url ->
-    (component url updateModel viewModel)
+  startApp
+    (component (toURI Index) updateModel viewModel)
        { subs = [ uriSub SetURI ]
+       , logLevel = DebugAll
        }
 -----------------------------------------------------------------------------
 -- | Update your model
