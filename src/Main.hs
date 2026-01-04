@@ -38,9 +38,10 @@ data Route = Index | Home | About | The404
 -----------------------------------------------------------------------------
 -- | Main entry point
 main :: IO ()
-main = run $
+main = do
+  uri <- getURI
   startApp
-    (component (toURI Index) updateModel viewModel)
+    (component uri updateModel viewModel)
        { subs = [ uriSub SetURI ]
        , logLevel = DebugAll
        }
