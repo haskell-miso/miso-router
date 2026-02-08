@@ -47,7 +47,7 @@ main = do
        }
 -----------------------------------------------------------------------------
 -- | Update your model
-updateModel :: Action -> Transition Model Action
+updateModel :: Action -> Effect parent Model Action
 updateModel = \case
   SetURI u -> do
     this .= u
