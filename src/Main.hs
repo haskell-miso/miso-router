@@ -40,7 +40,7 @@ data Route = Index | Home | About | The404
 main :: IO ()
 main = do
   uri <- getURI
-  startApp
+  startApp defaultEvents
     (component uri updateModel viewModel)
        { subs = [ uriSub SetURI ]
        , logLevel = DebugAll
