@@ -57,9 +57,7 @@ updateModel = \case
 -----------------------------------------------------------------------------
 -- | View function, with routing
 viewModel :: Route -> View Route Action
-viewModel v =
-  div_ 
-  [] 
+viewModel v = vfrag 
   [ h1_
     [ Style.style_ ["font-family" =: "monospace"] ]
     [ "🍜 🌐 ", a_ [ href_ "https://github.com/haskell-miso/miso-router" ] [ "miso-router" ] ]
@@ -74,20 +72,17 @@ viewModel v =
     ]
   ] where
       home =
-          div_
-          []
+        vfrag
           [ div_ [ ] [text "home"]
           , button_ [onClick goAbout] [text "go about"]
           ]
       about =
-          div_
-          []
+        vfrag
           [ div_ [] [text "about"]
           , button_ [onClick goHome] [text "go home"]
           ]
       the404 =
-          div_
-          []
+        vfrag
           [ text "the 404 :("
           , button_ [onClick goHome] [text "go home"]
           ]
