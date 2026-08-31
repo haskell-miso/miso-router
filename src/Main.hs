@@ -45,7 +45,7 @@ main = do
        }
 -----------------------------------------------------------------------------
 -- | Update your model
-updateModel :: Action -> Effect parent Route Action
+updateModel :: Action -> Effect context props Route Action
 updateModel = \case
   SetRoute newRoute ->
     this .= newRoute
@@ -56,8 +56,8 @@ updateModel = \case
     io_ (pushRoute route)
 -----------------------------------------------------------------------------
 -- | View function, with routing
-viewModel :: Route -> View Route Action
-viewModel v = vfrag 
+viewModel :: context -> props -> Route -> View context Route Action
+viewModel _ _ v = vfrag 
   [ h1_
     [ Style.style_ ["font-family" =: "monospace"] ]
     [ "🍜 🌐 ", a_ [ href_ "https://github.com/haskell-miso/miso-router" ] [ "miso-router" ] ]
